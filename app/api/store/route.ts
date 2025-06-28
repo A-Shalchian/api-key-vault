@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../lib/prisma";
+import { supabase } from "../../../lib/supabase";
 import { encrypt } from "../../../lib/sodium";
 import sodium from "libsodium-wrappers";
 
@@ -32,6 +33,15 @@ export async function POST(req: NextRequest) {
       update: { encrypted_key: encryptedApiKey },
       create: { name, encrypted_key: encryptedApiKey },
     });
+    
+    await supabase
+      .from('api_key_logs')
+      .insert({
+        operation: 'store',
+        key_name: name,
+        timestamp: new Date().toISOString()
+      });
+
 
     return NextResponse.json(
       { message: "API key stored successfully" },

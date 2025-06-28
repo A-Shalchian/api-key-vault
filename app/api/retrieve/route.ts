@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '../../../lib/prisma';
+import { supabase } from '../../../lib/supabase';
 import { decrypt } from '../../../lib/sodium';
 import sodium from 'libsodium-wrappers';
 
@@ -26,6 +27,15 @@ export async function GET(req: NextRequest) {
     const apiKeyRecord = await prisma.apiKey.findUnique({
       where: { name },
     });
+    
+    await supabase
+      .from('api_key_logs')
+      .insert({
+        operation: 'retrieve',
+        key_name: name,
+        success: !!apiKeyRecord,
+        timestamp: new Date().toISOString()
+      });
 
     if (!apiKeyRecord) {
       return NextResponse.json({ error: 'API key not found' }, { status: 404 });

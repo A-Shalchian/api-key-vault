@@ -1,22 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '../../../lib/prisma';
-import { supabase } from '../../../lib/supabase';
-import { decrypt } from '../../../lib/sodium';
+import { prisma } from '@/lib/prisma';
+import { createServerSupabaseClient } from '@/lib/supabase';
+import { decrypt } from '@/lib/sodium';
 import sodium from 'libsodium-wrappers';
 
 
-const KEY_STRING = 'YOUR_BASE64_ENCODED_KEY_HERE'; 
+// Get encryption key from environment variable
 let KEY: Uint8Array;
 
 const initializeKey = async () => {
   if (!KEY) {
     await sodium.ready;
-    KEY = sodium.from_base64(KEY_STRING, sodium.base64_variants.ORIGINAL);
+    const keyString = process.env.ENCRYPTION_KEY;
+    if (!keyString) {
+      throw new Error('ENCRYPTION_KEY environment variable is not set');
+    }
+    KEY = sodium.from_base64(keyString, sodium.base64_variants.ORIGINAL);
   }
 };
 
 export async function GET(req: NextRequest) {
   try {
+    // Authenticate the user
+    const supabase = createServerSupabaseClient();
+    const { data: { session }, error: authError } = await supabase.auth.getSession();
+    
+    if (authError || !session) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
+    const userId = session.user.id;
     await initializeKey();
     const name = req.nextUrl.searchParams.get('name');
 
@@ -24,18 +37,22 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
-    const apiKeyRecord = await prisma.apiKey.findUnique({
-      where: { name },
+    // Find API key that belongs to the authenticated user
+    const apiKeyRecord = await prisma.apiKey.findFirst({
+      where: { 
+        name,
+        userId
+      },
     });
     
-    await supabase
-      .from('api_key_logs')
-      .insert({
-        operation: 'retrieve',
-        key_name: name,
-        success: !!apiKeyRecord,
-        timestamp: new Date().toISOString()
-      });
+    // Log the API key retrieval attempt (using console log since apiKeyLog model doesn't exist)
+    console.log({
+      operation: 'retrieve',
+      keyName: name,
+      userId,
+      success: !!apiKeyRecord,
+      timestamp: new Date().toISOString()
+    });
 
     if (!apiKeyRecord) {
       return NextResponse.json({ error: 'API key not found' }, { status: 404 });

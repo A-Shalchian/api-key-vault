@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createServerSupabaseClient } from '@/lib/supabase';
 import { decrypt } from '@/lib/sodium';
 import sodium from 'libsodium-wrappers';
+import { supabase } from '@/lib/supabase';
 
 
-// Get encryption key from environment variable
 let KEY: Uint8Array;
 
 const initializeKey = async () => {
@@ -15,21 +14,37 @@ const initializeKey = async () => {
     if (!keyString) {
       throw new Error('ENCRYPTION_KEY environment variable is not set');
     }
-    KEY = sodium.from_base64(keyString, sodium.base64_variants.ORIGINAL);
+    
+    try {
+      KEY = sodium.from_base64(keyString, sodium.base64_variants.ORIGINAL);
+    } catch (error) {
+      console.error('Error decoding encryption key:', error);
+      const devKey = sodium.randombytes_buf(sodium.crypto_secretbox_KEYBYTES);
+      KEY = devKey;
+      console.log('Using a randomly generated key for this session');
+    }
   }
 };
 
 export async function GET(req: NextRequest) {
   try {
-    // Authenticate the user
-    const supabase = createServerSupabaseClient();
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
+    const authHeader = req.headers.get('authorization');
     
-    if (authError || !session) {
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      console.log('No authorization header');
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     
-    const userId = session.user.id;
+    const token = authHeader.split(' ')[1];
+    
+    const { data: { user }, error: verifyError } = await supabase.auth.getUser(token);
+    
+    if (verifyError || !user) {
+      console.log('Token verification error:', verifyError || 'No user found');
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    
+    const userId = user.id;
     await initializeKey();
     const name = req.nextUrl.searchParams.get('name');
 
@@ -37,7 +52,6 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Name is required' }, { status: 400 });
     }
 
-    // Find API key that belongs to the authenticated user
     const apiKeyRecord = await prisma.apiKey.findFirst({
       where: { 
         name,
@@ -45,7 +59,6 @@ export async function GET(req: NextRequest) {
       },
     });
     
-    // Log the API key retrieval attempt (using console log since apiKeyLog model doesn't exist)
     console.log({
       operation: 'retrieve',
       keyName: name,

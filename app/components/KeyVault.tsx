@@ -1,20 +1,43 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 
 export default function KeyVault() {
   const [name, setName] = useState("");
   const [apiKey, setApiKey] = useState("");
   const [retrievedKey, setRetrievedKey] = useState("");
   const [message, setMessage] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  
+  // Get the session token when the component mounts
+  useEffect(() => {
+    const getSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) {
+        setToken(data.session.access_token);
+      }
+    };
+    
+    getSession();
+  }, []);
 
   const handleStore = async () => {
     setMessage("");
     setRetrievedKey("");
+    
+    if (!token) {
+      setMessage("You must be logged in to store API keys");
+      return;
+    }
+    
     try {
       const response = await fetch("/api/store", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify({ name, apiKey }),
       });
       const data = await response.json();
@@ -34,8 +57,18 @@ export default function KeyVault() {
   const handleRetrieve = async () => {
     setMessage("");
     setRetrievedKey("");
+    
+    if (!token) {
+      setMessage("You must be logged in to retrieve API keys");
+      return;
+    }
+    
     try {
-      const response = await fetch(`/api/retrieve?name=${name}`);
+      const response = await fetch(`/api/retrieve?name=${name}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       const data = await response.json();
       if (response.ok) {
         setRetrievedKey(data.apiKey);
@@ -63,7 +96,7 @@ export default function KeyVault() {
           className="w-full p-2 border rounded-md"
         />
         <input
-          type="password" // password type to hide the key
+          type="password" 
           placeholder="API Key Value"
           value={apiKey}
           onChange={(e) => setApiKey(e.target.value)}

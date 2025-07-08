@@ -16,7 +16,6 @@ export default function LoginPage() {
   const [message, setMessage] = useState<string | null>(null);
   
   useEffect(() => {
-    // Check for verification status from the callback
     const verified = searchParams.get('verified');
     const verifiedEmail = searchParams.get('email');
     const errorMsg = searchParams.get('error');
@@ -40,7 +39,6 @@ export default function LoginPage() {
     setError(null);
     setIsLoading(true);
 
-    // Form validation
     if (!email || !password) {
       setError('Email and password are required');
       setIsLoading(false);
@@ -55,9 +53,8 @@ export default function LoginPage() {
 
       if (signInError) throw signInError;
 
-      // Successful login
       if (data?.session) {
-        router.push('/dashboard'); // Redirect to dashboard after login
+        router.push('/');
       }
     } catch (err: unknown) {
       console.error('Login error:', err);
@@ -194,7 +191,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
+              className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
             >
               {isLoading ? 'Signing in...' : 'Sign in'}
             </button>

@@ -43,11 +43,23 @@ API Key Vault is a web application that allows users to securely store, retrieve
    yarn install
    ```
 
-3. Create a `.env` file in the root directory with your Supabase credentials:
-   ```
-   SUPABASE_URL=your_supabase_url
-   SUPABASE_KEY=your_supabase_key
-   ```
+3. Create a `.env` file in the root directory with the following environment variables:
+```
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# PostgreSQL connection for Prisma
+DATABASE_URL=postgresql://user:password@host:5432/database
+
+# 32-byte symmetric key (Base64).  Generate with:
+#   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+ENCRYPTION_KEY=your_base64_key
+
+# (Optional) Development only: allow a throw-away random key if ENCRYPTION_KEY is missing.
+ALLOW_DEV_RANDOM_KEY=true
+```
 
 4. Set up the database schema:
    ```bash

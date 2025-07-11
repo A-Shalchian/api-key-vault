@@ -50,22 +50,29 @@ export default function Navbar() {
               />
             </button>
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-44 overflow-hidden rounded-md border bg-white shadow-lg">
-                {session.user?.email && (
-                  <div className="px-4 py-2 text-sm text-gray-600 truncate">
-                    {session.user.email}
-                  </div>
-                )}
+              <div className={`absolute right-0 mt-2 w-56 origin-top-right rounded-lg bg-white shadow-xl ring-1 ring-black/5 ${menuOpen ? 'animate-scale' : ''}`}>
+                <div className="flex flex-col items-center border-b px-4 py-4">
+                  <Image
+                    src={DEFAULT_AVATAR}
+                    alt="User avatar large"
+                    width={48}
+                    height={48}
+                    className="mb-2 rounded-full"
+                  />
+                  <p className="text-sm font-medium text-gray-800 truncate w-full text-center">
+                    {session.user?.email}
+                  </p>
+                </div>
                 <Link
                   href="/profile"
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                   onClick={() => setMenuOpen(false)}
                 >
                   Profile
                 </Link>
                 <button
                   onClick={handleLogout}
-                  className="block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100"
+                  className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 transition-colors"
                 >
                   Sign out
                 </button>

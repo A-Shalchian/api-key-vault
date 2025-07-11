@@ -1,30 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { decrypt } from '@/lib/sodium';
-import sodium from 'libsodium-wrappers';
+import { getEncryptionKey } from '@/lib/encryptionKey';
 import { supabase } from '@/lib/supabase';
 
 
-let KEY: Uint8Array;
 
-const initializeKey = async () => {
-  if (!KEY) {
-    await sodium.ready;
-    const keyString = process.env.ENCRYPTION_KEY;
-    if (!keyString) {
-      throw new Error('ENCRYPTION_KEY environment variable is not set');
-    }
-    
-    try {
-      KEY = sodium.from_base64(keyString, sodium.base64_variants.ORIGINAL);
-    } catch (error) {
-      console.error('Error decoding encryption key:', error);
-      const devKey = sodium.randombytes_buf(sodium.crypto_secretbox_KEYBYTES);
-      KEY = devKey;
-      console.log('Using a randomly generated key for this session');
-    }
-  }
-};
+
+
+
+
 
 export async function GET(req: NextRequest) {
   try {
@@ -45,7 +30,7 @@ export async function GET(req: NextRequest) {
     }
     
     const userId = user.id;
-    await initializeKey();
+    const KEY = await getEncryptionKey();
     const name = req.nextUrl.searchParams.get('name');
 
     if (!name) {

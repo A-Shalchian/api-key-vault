@@ -5,6 +5,7 @@ import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, CartesianGrid, XAxis, YAxis, Bar } from "recharts";
 import { Edit, Save, X, Key, Clock, Calendar, User, Mail, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
+import ApiKeyDisplay from "../components/ApiKeyDisplay";
 
 interface KeyEntry {
   id: number;
@@ -335,7 +336,9 @@ export default function ProfilePage() {
                           {new Date(k.createdAt).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="mt-2 break-all text-sm text-gray-700 bg-gray-50 p-2 rounded">{k.apiKey}</p>
+                      <div className="mt-2">
+                        <ApiKeyDisplay apiKey={k.apiKey} />
+                      </div>
                     </li>
                   ))}
                 </ul>

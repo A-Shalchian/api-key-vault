@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 import { Search, Key, Calendar, Loader2, AlertCircle } from "lucide-react";
 import Link from "next/link";
+import ApiKeyDisplay from "../components/ApiKeyDisplay";
 
 interface KeyEntry {
   id: number;
@@ -68,6 +69,8 @@ export default function KeysPage() {
       setFilteredKeys(filtered);
     }
   }, [searchQuery, keys]);
+
+
 
   if (loading) {
     return (
@@ -157,13 +160,7 @@ export default function KeysPage() {
                   <span>{new Date(k.createdAt).toLocaleDateString()}</span>
                 </div>
               </div>
-              <div className="bg-gray-50 p-4 rounded-lg border border-gray-100 group-hover:bg-blue-50 group-hover:border-blue-100 transition-all">
-                <div className="flex items-center mb-2">
-                  <Key className="h-4 w-4 text-gray-500 group-hover:text-blue-600 transition-colors mr-2" />
-                  <span className="text-xs text-gray-500 font-medium">API Key</span>
-                </div>
-                <p className="break-all text-sm text-gray-700 font-mono">{k.apiKey}</p>
-              </div>
+              <ApiKeyDisplay apiKey={k.apiKey} />
             </div>
           ))}
         </div>

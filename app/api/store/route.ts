@@ -3,14 +3,17 @@ import { prisma } from "@/lib/prisma";
 import { encrypt } from "@/lib/sodium";
 import { getEncryptionKey } from "@/lib/encryptionKey";
 import { supabase } from "@/lib/supabase";
+import { ErrorCode, createErrorResponse, logApiError } from '@/lib/errorHandler';
 
 export async function POST(req: NextRequest) {
   try {
     const authHeader = req.headers.get('authorization');
     
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      console.log('No authorization header');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return createErrorResponse({
+        code: ErrorCode.UNAUTHORIZED,
+        message: 'Missing or invalid authorization header'
+      });
     }
     
     const token = authHeader.split(' ')[1];
@@ -18,8 +21,10 @@ export async function POST(req: NextRequest) {
     const { data: { user }, error: verifyError } = await supabase.auth.getUser(token);
     
     if (verifyError || !user) {
-      console.log('Token verification error:', verifyError || 'No user found');
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return createErrorResponse({
+        code: ErrorCode.UNAUTHORIZED,
+        message: 'Invalid authentication token'
+      });
     }
     
     const userId = user.id;
@@ -27,10 +32,10 @@ export async function POST(req: NextRequest) {
     const { name, apiKey } = await req.json();
 
     if (!name || !apiKey) {
-      return NextResponse.json(
-        { error: "Name and API key are required" },
-        { status: 400 }
-      );
+      return createErrorResponse({
+        code: ErrorCode.BAD_REQUEST,
+        message: 'Name and API key are required'
+      });
     }
 
     const encryptedApiKey = await encrypt(apiKey, KEY);
@@ -57,13 +62,7 @@ export async function POST(req: NextRequest) {
       });
     }
     
-    console.log({
-      operation: 'store',
-      keyName: name,
-      userId,
-      success: true,
-      timestamp: new Date().toISOString()
-    });
+    // Operation successful
 
 
     return NextResponse.json(
@@ -71,10 +70,10 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error(error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+    logApiError(error, { route: '/api/store', method: 'POST' });
+    return createErrorResponse({
+      code: ErrorCode.INTERNAL_ERROR,
+      message: 'Failed to store API key'
+    });
   }
 }

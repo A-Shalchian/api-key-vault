@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
+import { ErrorCode, createErrorResponse, logApiError } from '@/lib/errorHandler';
 
 const prisma = new PrismaClient();
 
@@ -8,10 +9,10 @@ export async function POST(request: NextRequest) {
     const { id, email, firstName, lastName } = await request.json();
 
     if (!id || !email || !firstName || !lastName) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      );
+      return createErrorResponse({
+        code: ErrorCode.BAD_REQUEST,
+        message: 'Missing required fields'
+      });
     }
     
     const user = await prisma.user.create({
@@ -36,19 +37,19 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Error creating user:', error);
+    logApiError(error, { route: '/api/users', method: 'POST' });
     
     if (error instanceof Error && error.message.includes('Unique constraint')) {
-      return NextResponse.json(
-        { error: 'User already exists' },
-        { status: 409 }
-      );
+      return createErrorResponse({
+        code: ErrorCode.CONFLICT,
+        message: 'User already exists'
+      });
     }
     
-    return NextResponse.json(
-      { error: 'Failed to create user' },
-      { status: 500 }
-    );
+    return createErrorResponse({
+      code: ErrorCode.INTERNAL_ERROR,
+      message: 'Failed to create user'
+    });
   } finally {
     await prisma.$disconnect();
   }

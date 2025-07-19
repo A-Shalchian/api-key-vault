@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
+import { Mail, Lock, AlertCircle, CheckCircle, Loader2 } from 'lucide-react';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -91,26 +92,27 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-sky-500 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-md space-y-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-xl">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Sign in to your account
+          <h2 className="mt-2 text-center text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
+            Welcome Back
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            Or{' '}
+            Don&apos;t have an account?{' '}
             <Link 
               href="/signup" 
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className="font-medium bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
             >
-              create a new account
+              Sign up now
             </Link>
           </p>
         </div>
 
         {error && (
-          <div className="rounded-md bg-red-50 p-4">
-            <div className="flex">
+          <div className="rounded-lg bg-red-50 p-4 border-l-4 border-red-500 shadow-sm">
+            <div className="flex items-center">
+              <AlertCircle className="h-5 w-5 text-red-500" />
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-red-800">{error}</h3>
               </div>
@@ -119,8 +121,9 @@ export default function LoginPage() {
         )}
 
         {message && (
-          <div className="rounded-md bg-green-50 p-4">
-            <div className="flex">
+          <div className="rounded-lg bg-green-50 p-4 border-l-4 border-green-500 shadow-sm">
+            <div className="flex items-center">
+              <CheckCircle className="h-5 w-5 text-green-500" />
               <div className="ml-3">
                 <h3 className="text-sm font-medium text-green-800">{message}</h3>
               </div>
@@ -129,38 +132,48 @@ export default function LoginPage() {
         )}
 
         <form className="mt-8 space-y-6" onSubmit={handleLogin}>
-          <div className="-space-y-px rounded-md shadow-sm">
+          <div className="space-y-4">
             <div>
-              <label htmlFor="email-address" className="sr-only">
+              <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-1">
                 Email address
               </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="relative block w-full rounded-t-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Email address"
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Mail className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="email-address"
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="block w-full pl-10 rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                  placeholder="you@example.com"
+                />
+              </div>
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Password
               </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="relative block w-full rounded-b-md border-0 py-1.5 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                placeholder="Password"
-              />
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Lock className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="block w-full pl-10 rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                  placeholder="••••••••"
+                />
+              </div>
             </div>
           </div>
 
@@ -170,9 +183,9 @@ export default function LoginPage() {
                 id="remember-me"
                 name="remember-me"
                 type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                className="h-4 w-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
               />
-              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
                 Remember me
               </label>
             </div>
@@ -180,9 +193,9 @@ export default function LoginPage() {
             <div className="text-sm">
               <button
                 onClick={handlePasswordReset}
-                className="font-medium text-indigo-600 hover:text-indigo-500"
+                className="font-medium bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent hover:opacity-80 transition-all"
               >
-                Forgot your password?
+                Forgot password?
               </button>
             </div>
           </div>
@@ -191,9 +204,14 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-md bg-indigo-600 py-2 px-3 text-sm font-semibold text-white hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-indigo-300"
+              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-3 px-4 text-sm font-semibold text-white hover:from-indigo-500 hover:to-purple-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-md"
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? (
+                <span className="flex items-center">
+                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" />
+                  Signing in...
+                </span>
+              ) : 'Sign in'}
             </button>
           </div>
         </form>

@@ -2,29 +2,49 @@ import { Lock, Calendar, Shield } from 'lucide-react';
 
 export default function FeaturesSection() {
   return (
-    <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Why Use API Key Vault?</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-          <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-            <Lock className="h-7 w-7 text-blue-600" />
+    <section className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      <h2 className="mb-12 bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-500 bg-clip-text text-center text-4xl font-bold text-transparent">
+        Why Use API Key Vault?
+      </h2>
+      
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+        {/* Feature Card 1 */}
+        <div className="rounded-2xl border border-indigo-100 bg-white/80 p-8 shadow-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 shadow-md">
+            <Lock className="h-8 w-8 text-white" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">End-to-End Encryption</h3>
-          <p className="text-gray-600 leading-relaxed">Your API keys are encrypted before they leave your browser and can only be decrypted by you.</p>
+          <h3 className="mb-3 bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-xl font-semibold text-transparent">
+            End-to-End Encryption
+          </h3>
+          <p className="leading-relaxed text-gray-700">
+            Your API keys are encrypted before they leave your browser and can only be decrypted by you.
+          </p>
         </div>
-        <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-          <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-            <Calendar className="h-7 w-7 text-blue-600" />
+        
+        {/* Feature Card 2 */}
+        <div className="rounded-2xl border border-indigo-100 bg-white/80 p-8 shadow-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-sky-500 shadow-md">
+            <Calendar className="h-8 w-8 text-white" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">Easy Access</h3>
-          <p className="text-gray-600 leading-relaxed">Retrieve your API keys whenever you need them with just a few clicks.</p>
+          <h3 className="mb-3 bg-gradient-to-r from-purple-600 to-sky-500 bg-clip-text text-xl font-semibold text-transparent">
+            Easy Access
+          </h3>
+          <p className="leading-relaxed text-gray-700">
+            Retrieve your API keys whenever you need them with just a few clicks.
+          </p>
         </div>
-        <div className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-          <div className="w-14 h-14 bg-blue-100 rounded-full flex items-center justify-center mb-6">
-            <Shield className="h-7 w-7 text-blue-600" />
+        
+        {/* Feature Card 3 */}
+        <div className="rounded-2xl border border-indigo-100 bg-white/80 p-8 shadow-xl backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl">
+          <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br from-sky-500 to-indigo-500 shadow-md">
+            <Shield className="h-8 w-8 text-white" />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-3">Secure Storage</h3>
-          <p className="text-gray-600 leading-relaxed">Your encrypted keys are stored in a secure database with multiple layers of protection.</p>
+          <h3 className="mb-3 bg-gradient-to-r from-sky-500 to-indigo-600 bg-clip-text text-xl font-semibold text-transparent">
+            Secure Storage
+          </h3>
+          <p className="leading-relaxed text-gray-700">
+            Your encrypted keys are stored in a secure database with multiple layers of protection.
+          </p>
         </div>
       </div>
     </section>

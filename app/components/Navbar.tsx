@@ -31,7 +31,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-10 w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-500 shadow-md">
+    <header className="sticky top-0 z-50 w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-sky-500 shadow-md">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Link href="/" className="text-xl font-bold text-white flex items-center space-x-2 hover:opacity-90 transition-opacity">
           <Shield className="h-6 w-6 stroke-white" />

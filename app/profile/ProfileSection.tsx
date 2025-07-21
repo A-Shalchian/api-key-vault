@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Edit, Save, X, Key, Clock, Calendar, User, Mail, ChevronDown, ChevronUp, Loader2 } from "lucide-react";
-import ApiKeyDisplay from "./ApiKeyDisplay";
+import ApiKeyDisplay from "../components/ApiKeyDisplay";
 
 interface KeyEntry {
   id: number;
@@ -39,7 +39,7 @@ export default function ProfileSection({ userProfile, keys, token }: ProfileSect
     try {
       // This is a placeholder - you would need to implement the API endpoint
       // to update the user profile
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simulating API call
+      await new Promise(resolve => setTimeout(resolve, 800));
       
       setEditMode(false);
     } catch (err) {

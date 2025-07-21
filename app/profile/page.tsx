@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
 import { Loader2 } from "lucide-react";
-import ProfileSection from "../components/ProfileSection";
-import AnalyticsSection from "../components/AnalyticsSection";
+import ProfileSection from "./ProfileSection";
+import AnalyticsSection from "./AnalyticsSection";
 
 interface KeyEntry {
   id: number;

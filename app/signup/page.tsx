@@ -21,7 +21,6 @@ export default function SignupPage() {
     setError(null);
     setIsLoading(true);
 
-    // Form validation
     if (!email || !password || !confirmPassword || !firstName || !lastName) {
       setError('All fields are required');
       setIsLoading(false);
@@ -41,7 +40,6 @@ export default function SignupPage() {
     }
 
     try {
-      // 1. Register the user with Supabase Auth
       const { data, error: signupError } = await supabase.auth.signUp({
         email,
         password,
@@ -53,10 +51,7 @@ export default function SignupPage() {
       if (signupError) throw signupError;
       
       if (data.user) {
-        // 2. Create a corresponding user in the Prisma database
         try {
-          // We need to use a server action or API route for Prisma operations
-          // as Prisma client shouldn't be instantiated on the client side
           const response = await fetch('/api/users', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -73,8 +68,6 @@ export default function SignupPage() {
             throw new Error(responseData.message || 'Failed to create user');
           }
 
-          // Successful signup
-          // Instead of redirecting, show the verification instructions on this page
           setIsEmailSent(true);
         } catch (dbError) {
           console.error('Database error:', dbError);
@@ -90,13 +83,13 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-sky-500 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="w-full max-w-md space-y-8 bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-xl">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-sky-500 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl space-y-6 sm:space-y-8 bg-white/95 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-2xl shadow-xl">
         <div>
-          <h2 className="mt-2 text-center text-3xl font-extrabold bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
+          <h2 className="mt-2 text-center text-2xl sm:text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
             {isEmailSent ? 'Verify your email' : 'Create your account'}
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm sm:text-base text-gray-600">
             {!isEmailSent && (
               <>
                 Already have an account?{' '}
@@ -141,11 +134,11 @@ export default function SignupPage() {
             </div>
           </div>
         ) : (
-          <form className="mt-8 space-y-6" onSubmit={handleSignup}>
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
+          <form className="mt-6 sm:mt-8 space-y-4 sm:space-y-6" onSubmit={handleSignup}>
+          <div className="space-y-4 sm:space-y-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="first-name" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                   First Name
                 </label>
                 <div className="relative">
@@ -159,13 +152,13 @@ export default function SignupPage() {
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="block w-full pl-10 rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                    className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
                     placeholder="First"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="last-name" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                   Last Name
                 </label>
                 <input
@@ -175,13 +168,13 @@ export default function SignupPage() {
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                  className="block w-full rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
                   placeholder="Last"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="email-address" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email-address" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                 Email address
               </label>
               <div className="relative">
@@ -196,13 +189,13 @@ export default function SignupPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                  className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
                   placeholder="you@example.com"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="password" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                 Password
               </label>
               <div className="relative">
@@ -217,13 +210,13 @@ export default function SignupPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                  className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
                   placeholder="••••••••"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="confirm-password" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
                 Confirm Password
               </label>
               <div className="relative">
@@ -238,7 +231,7 @@ export default function SignupPage() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="block w-full pl-10 rounded-lg border-0 py-2.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out sm:text-sm sm:leading-6"
+                  className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
                   placeholder="••••••••"
                 />
               </div>
@@ -249,11 +242,11 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-3 px-4 text-sm font-semibold text-white hover:from-indigo-500 hover:to-purple-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-md"
+              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold text-white hover:from-indigo-500 hover:to-purple-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-md"
             >
               {isLoading ? (
                 <span className="flex items-center">
-                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" />
+                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white" />
                   Creating account...
                 </span>
               ) : 'Sign up'}

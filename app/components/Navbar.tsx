@@ -6,6 +6,7 @@ import type { Session } from "@supabase/supabase-js";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { Key, User, PlusCircle, LogOut, Menu, X, Home, Shield } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const DEFAULT_AVATAR = "https://www.gravatar.com/avatar/?d=mp";
 
@@ -55,6 +56,11 @@ export default function Navbar() {
                 <PlusCircle className="h-4 w-4" />
                 <span>Store Keys</span>
               </Link>
+            </div>
+            
+            {/* Theme Toggle - Desktop */}
+            <div className="hidden md:block">
+              <ThemeToggle />
             </div>
             
             {/* Mobile Menu Button */}
@@ -155,48 +161,56 @@ export default function Navbar() {
         
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && session && (
-          <div className="absolute top-16 inset-x-0 z-50 bg-gradient-to-br from-indigo-600/95 via-purple-600/95 to-sky-500/95 shadow-lg backdrop-blur-sm animate-in fade-in slide-in-from-top-5 duration-300">
-            <nav className="flex flex-col py-4">
+          <div className="md:hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-sm shadow-xl border-t border-white/20 animate-in slide-in-from-top-2 duration-200">
+            <div className="px-4 py-6 space-y-4">
               <Link
                 href="/"
-                className="flex items-center space-x-2 px-6 py-3 text-white hover:bg-white/10 transition-all"
+                className="flex items-center space-x-3 text-gray-800 hover:text-indigo-600 font-medium transition-all py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Home className="h-5 w-5" />
-                <span className="font-medium">Home</span>
-              </Link>
-              <Link
-                href="/profile"
-                className="flex items-center space-x-2 px-6 py-3 text-white hover:bg-white/10 transition-all"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <User className="h-5 w-5" />
-                <span className="font-medium">Profile</span>
+                <span>Home</span>
               </Link>
               <Link
                 href="/keys"
-                className="flex items-center space-x-2 px-6 py-3 text-white hover:bg-white/10 transition-all"
+                className="flex items-center space-x-3 text-gray-800 hover:text-indigo-600 font-medium transition-all py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <Key className="h-5 w-5" />
-                <span className="font-medium">Vault</span>
+                <span>Vault</span>
               </Link>
               <Link
                 href="/store-key"
-                className="flex items-center space-x-2 px-6 py-3 text-white hover:bg-white/10 transition-all"
+                className="flex items-center space-x-3 text-gray-800 hover:text-indigo-600 font-medium transition-all py-2"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 <PlusCircle className="h-5 w-5" />
-                <span className="font-medium">Store Keys</span>
+                <span>Store Keys</span>
               </Link>
+              <Link
+                href="/profile"
+                className="flex items-center space-x-3 text-gray-800 hover:text-indigo-600 font-medium transition-all py-2"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <User className="h-5 w-5" />
+                <span>Profile</span>
+              </Link>
+              
+              {/* Theme Toggle - Mobile */}
+              <div className="flex items-center justify-between py-2">
+                <span className="text-gray-800 font-medium">Theme</span>
+                <ThemeToggle />
+              </div>
+              
+              <hr className="border-gray-200" />
               <button
                 onClick={handleLogout}
-                className="flex items-center space-x-2 px-6 py-3 text-white hover:bg-red-500/20 transition-all text-left"
+                className="flex items-center space-x-3 text-red-600 hover:text-red-700 font-medium transition-all py-2 w-full"
               >
                 <LogOut className="h-5 w-5" />
-                <span className="font-medium">Sign out</span>
+                <span>Sign Out</span>
               </button>
-            </nav>
+            </div>
           </div>
         )}
       </div>

@@ -11,17 +11,24 @@ if (!supabaseUrl || !supabaseAnonKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-export const createServerSupabaseClient = () => {
+// Server-side Supabase client with service role key (lazy initialization)
+let _supabaseServer: ReturnType<typeof createClient> | null = null;
+
+export function getSupabaseServer() {
+  if (_supabaseServer) return _supabaseServer;
+
   const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  
+
   if (!supabaseServiceKey) {
     throw new Error("Missing SUPABASE_SERVICE_ROLE_KEY");
   }
-  
-  return createClient(supabaseUrl, supabaseServiceKey, {
+
+  _supabaseServer = createClient(supabaseUrl, supabaseServiceKey, {
     auth: {
       autoRefreshToken: false,
       persistSession: false
     }
   });
-};
+
+  return _supabaseServer;
+}

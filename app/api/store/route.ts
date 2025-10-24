@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { db } from "@/lib/db";
 import { encrypt } from "@/lib/sodium";
 import { getEncryptionKey } from "@/lib/encryptionKey";
 import { supabase } from "@/lib/supabase";
@@ -8,25 +8,25 @@ import { ErrorCode, createErrorResponse, logApiError } from '@/lib/errorHandler'
 export async function POST(req: NextRequest) {
   try {
     const authHeader = req.headers.get('authorization');
-    
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return createErrorResponse({
         code: ErrorCode.UNAUTHORIZED,
         message: 'Missing or invalid authorization header'
       });
     }
-    
+
     const token = authHeader.split(' ')[1];
-    
+
     const { data: { user }, error: verifyError } = await supabase.auth.getUser(token);
-    
+
     if (verifyError || !user) {
       return createErrorResponse({
         code: ErrorCode.UNAUTHORIZED,
         message: 'Invalid authentication token'
       });
     }
-    
+
     const userId = user.id;
     const KEY = await getEncryptionKey();
     const { name, apiKey } = await req.json();
@@ -40,30 +40,17 @@ export async function POST(req: NextRequest) {
 
     const encryptedApiKey = await encrypt(apiKey, KEY);
 
-    const existingKey = await prisma.apiKey.findFirst({
-      where: {
-        name,
-        userId
-      }
-    });
-    
+    const existingKey = await db.apiKeys.getByName(userId, name);
+
     if (existingKey) {
-      await prisma.apiKey.update({
-        where: { id: existingKey.id },
-        data: { encrypted_key: encryptedApiKey }
-      });
+      await db.apiKeys.update(existingKey.id, { encrypted_key: encryptedApiKey });
     } else {
-      await prisma.apiKey.create({
-        data: {
-          name,
-          encrypted_key: encryptedApiKey,
-          userId
-        }
+      await db.apiKeys.create({
+        user_id: userId,
+        name,
+        encrypted_key: encryptedApiKey
       });
     }
-    
-    // Operation successful
-
 
     return NextResponse.json(
       { message: "API key stored successfully" },

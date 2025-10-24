@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/db';
 import { decrypt } from '@/lib/sodium';
 import { getEncryptionKey } from '@/lib/encryptionKey';
 import { supabase } from '@/lib/supabase';
@@ -29,17 +29,14 @@ export async function GET(req: NextRequest) {
     const userId = user.id;
     const KEY = await getEncryptionKey();
 
-    const apiKeys = await prisma.apiKey.findMany({
-      where: { userId },
-      orderBy: { createdAt: 'desc' },
-    });
+    const apiKeys = await db.apiKeys.getByUserId(userId);
 
     const decrypted = await Promise.all(
-      apiKeys.map(async ({ id, name, encrypted_key, createdAt }) => ({
+      apiKeys.map(async ({ id, name, encrypted_key, created_at }) => ({
         id,
         name,
         apiKey: await decrypt(encrypted_key, KEY),
-        createdAt,
+        createdAt: created_at,
       }))
     );
 

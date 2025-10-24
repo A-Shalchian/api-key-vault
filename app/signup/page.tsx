@@ -83,19 +83,19 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-sky-500 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
-      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl space-y-6 sm:space-y-8 bg-white/95 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-2xl shadow-xl">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-950 py-6 px-4 sm:py-12 sm:px-6 lg:px-8">
+      <div className="w-full max-w-sm sm:max-w-md lg:max-w-lg xl:max-w-xl space-y-6 sm:space-y-8 bg-white/80 dark:bg-slate-800/95 backdrop-blur-sm p-6 sm:p-8 lg:p-10 rounded-2xl shadow-lg dark:shadow-slate-900/50 border border-gray-200 dark:border-slate-600/50">
         <div>
-          <h2 className="mt-2 text-center text-2xl sm:text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
+          <h2 className="mt-2 text-center text-2xl sm:text-3xl lg:text-4xl font-extrabold bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 dark:from-slate-100 dark:via-blue-100 dark:to-slate-100 bg-clip-text text-transparent">
             {isEmailSent ? 'Verify your email' : 'Create your account'}
           </h2>
-          <p className="mt-2 text-center text-sm sm:text-base text-gray-600">
+          <p className="mt-2 text-center text-sm sm:text-base text-gray-600 dark:text-slate-400">
             {!isEmailSent && (
               <>
                 Already have an account?{' '}
-                <Link 
-                  href="/login" 
-                  className="font-medium bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+                <Link
+                  href="/login"
+                  className="font-medium text-gray-800 dark:text-slate-100 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
                   Sign in
                 </Link>
@@ -105,29 +105,29 @@ export default function SignupPage() {
         </div>
 
         {error && (
-          <div className="rounded-lg bg-red-50 p-4 border-l-4 border-red-500 shadow-sm">
+          <div className="rounded-lg bg-red-50 dark:bg-red-900/20 p-4 border-l-4 border-red-500 dark:border-red-400">
             <div className="flex items-center">
-              <AlertCircle className="h-5 w-5 text-red-500" />
+              <AlertCircle className="h-5 w-5 text-red-500 dark:text-red-400" />
               <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">{error}</h3>
+                <h3 className="text-sm font-medium text-red-800 dark:text-red-200">{error}</h3>
               </div>
             </div>
           </div>
         )}
 
         {isEmailSent ? (
-          <div className="rounded-lg bg-green-50 p-6 text-center border-l-4 border-green-500 shadow-sm">
+          <div className="rounded-lg bg-green-50 dark:bg-green-900/20 p-6 text-center border-l-4 border-green-500 dark:border-green-400">
             <div className="flex flex-col items-center space-y-4">
-              <MailCheck className="h-16 w-16 text-green-500" stroke="currentColor" />
+              <MailCheck className="h-16 w-16 text-green-500 dark:text-green-400" stroke="currentColor" />
               <div className="text-center">
-                <h3 className="text-xl font-medium bg-gradient-to-r from-green-600 to-teal-500 bg-clip-text text-transparent">Verification email sent!</h3>
-                <p className="mt-2 text-sm text-green-700">
+                <h3 className="text-xl font-medium text-green-800 dark:text-green-200">Verification email sent!</h3>
+                <p className="mt-2 text-sm text-green-700 dark:text-green-300">
                   We&apos;ve sent a verification link to <strong>{email}</strong>.<br />
                   Please check your inbox and click the link to activate your account.
                 </p>
               </div>
               <div className="mt-4">
-                <Link href="/login" className="font-medium bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent hover:opacity-80 transition-all">
+                <Link href="/login" className="font-medium text-gray-800 dark:text-slate-100 hover:text-gray-900 dark:hover:text-white transition-colors">
                   Return to login
                 </Link>
               </div>
@@ -138,12 +138,12 @@ export default function SignupPage() {
           <div className="space-y-4 sm:space-y-5">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label htmlFor="first-name" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
+                <label htmlFor="first-name" className="block text-sm sm:text-base font-medium text-gray-700 dark:text-slate-300 mb-1 sm:mb-2">
                   First Name
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <User className="h-5 w-5 text-gray-400" />
+                    <User className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                   </div>
                   <input
                     id="first-name"
@@ -152,13 +152,13 @@ export default function SignupPage() {
                     required
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
+                    className="block w-full pl-10 sm:pl-12 rounded-lg border border-gray-200 dark:border-slate-600/50 bg-white dark:bg-slate-700/50 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-gray-400 dark:focus:ring-slate-500 focus:border-transparent transition-all text-sm sm:text-base"
                     placeholder="First"
                   />
                 </div>
               </div>
               <div>
-                <label htmlFor="last-name" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
+                <label htmlFor="last-name" className="block text-sm sm:text-base font-medium text-gray-700 dark:text-slate-300 mb-1 sm:mb-2">
                   Last Name
                 </label>
                 <input
@@ -168,18 +168,18 @@ export default function SignupPage() {
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="block w-full rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
+                  className="block w-full rounded-lg border border-gray-200 dark:border-slate-600/50 bg-white dark:bg-slate-700/50 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-gray-400 dark:focus:ring-slate-500 focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="Last"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="email-address" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
+              <label htmlFor="email-address" className="block text-sm sm:text-base font-medium text-gray-700 dark:text-slate-300 mb-1 sm:mb-2">
                 Email address
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-gray-400" />
+                  <Mail className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                 </div>
                 <input
                   id="email-address"
@@ -189,18 +189,18 @@ export default function SignupPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
+                  className="block w-full pl-10 sm:pl-12 rounded-lg border border-gray-200 dark:border-slate-600/50 bg-white dark:bg-slate-700/50 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-gray-400 dark:focus:ring-slate-500 focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="you@example.com"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
+              <label htmlFor="password" className="block text-sm sm:text-base font-medium text-gray-700 dark:text-slate-300 mb-1 sm:mb-2">
                 Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                 </div>
                 <input
                   id="password"
@@ -210,18 +210,18 @@ export default function SignupPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
+                  className="block w-full pl-10 sm:pl-12 rounded-lg border border-gray-200 dark:border-slate-600/50 bg-white dark:bg-slate-700/50 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-gray-400 dark:focus:ring-slate-500 focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="••••••••"
                 />
               </div>
             </div>
             <div>
-              <label htmlFor="confirm-password" className="block text-sm sm:text-base font-medium text-gray-700 mb-1 sm:mb-2">
+              <label htmlFor="confirm-password" className="block text-sm sm:text-base font-medium text-gray-700 dark:text-slate-300 mb-1 sm:mb-2">
                 Confirm Password
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-gray-400 dark:text-slate-500" />
                 </div>
                 <input
                   id="confirm-password"
@@ -231,7 +231,7 @@ export default function SignupPage() {
                   required
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
-                  className="block w-full pl-10 sm:pl-12 rounded-lg border-0 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-purple-600 transition-all duration-200 ease-in-out text-sm sm:text-base leading-6"
+                  className="block w-full pl-10 sm:pl-12 rounded-lg border border-gray-200 dark:border-slate-600/50 bg-white dark:bg-slate-700/50 py-3 sm:py-3.5 px-3 sm:px-4 text-gray-900 dark:text-slate-100 placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:ring-2 focus:ring-gray-400 dark:focus:ring-slate-500 focus:border-transparent transition-all text-sm sm:text-base"
                   placeholder="••••••••"
                 />
               </div>
@@ -242,11 +242,11 @@ export default function SignupPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative flex w-full justify-center rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold text-white hover:from-indigo-500 hover:to-purple-500 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 ease-in-out focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-purple-600 disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-md"
+              className="group relative flex w-full justify-center rounded-lg bg-gray-800 dark:bg-slate-100 py-3 sm:py-4 px-4 sm:px-6 text-sm sm:text-base font-semibold text-white dark:text-gray-900 hover:bg-gray-900 dark:hover:bg-white shadow-lg hover:shadow-xl transition-all disabled:opacity-70"
             >
               {isLoading ? (
                 <span className="flex items-center">
-                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5 text-white" />
+                  <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4 sm:h-5 sm:w-5" />
                   Creating account...
                 </span>
               ) : 'Sign up'}

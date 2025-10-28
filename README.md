@@ -1,95 +1,114 @@
 # API Key Vault
 
-A secure storage solution for managing and encrypting API keys built with Next.js, Prisma, and Supabase.
+<div align="center">
 
-## Overview
+  **Secure storage for your API keys with military-grade encryption**
 
-API Key Vault is a web application that allows users to securely store, retrieve, and manage their API keys. With end-to-end encryption, your sensitive credentials remain protected while being easily accessible when needed for your applications.
+  [![Next.js](https://img.shields.io/badge/Next.js-15-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)](https://www.typescriptlang.org/)
+  [![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green?style=flat-square&logo=supabase)](https://supabase.com/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38bdf8?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
 
-## Features
+</div>
 
-- **Secure Storage**: End-to-end encryption for all API keys
-- **Easy Retrieval**: Simple API for storing and retrieving keys
-- **User Management**: Authentication and authorization
-- **Modern UI**: Clean interface built with React and Tailwind CSS
+##  Screenshots
 
-## Technology Stack
+<div align="center">
+  <table>
+    <tr>
+      <td width="50%">
+        <img src="./public/API-KV-Thumbnail.png" alt="API Key Vault - Light Mode" />
+        <p align="center"><em>Light Mode</em></p>
+      </td>
+      <td width="50%">
+        <img src="./public/API-KV-Thumbnail-dark.png" alt="API Key Vault - Dark Mode" />
+        <p align="center"><em>Dark Mode</em></p>
+      </td>
+    </tr>
+  </table>
+</div>
 
-- **Frontend**: React 19, Next.js 15
-- **Backend**: Next.js API Routes
-- **Database**: Prisma with Supabase
-- **Styling**: Tailwind CSS
+---
 
-## Getting Started
+##  Overview
 
-### Prerequisites
+API Key Vault is a modern web application that allows developers to securely store, retrieve, and manage their API keys with **end-to-end encryption**. Built with the latest technologies, it provides a seamless experience for keeping your sensitive credentials safe while making them easily accessible when needed.
 
-- Node.js (version 18 or higher recommended)
-- npm or yarn
-- Supabase account (for database)
+##  Features
 
-### Installation
+-  **End-to-End Encryption** - API keys are encrypted using libsodium (NaCl) before storage
+-  **Easy Key Management** - Store, retrieve, and organize all your API keys in one place
+-  **User Authentication** - Secure authentication powered by Supabase Auth
+-  **Row-Level Security** - Database-enforced access control with RLS policies
+-  **Dark Mode Support** - Beautiful UI that adapts to your preference
+-  **Responsive Design** - Works seamlessly on desktop, tablet, and mobile
+-  **Fast & Modern** - Built with Next.js 15 and React 19
+-  **Zero-Knowledge Architecture** - Your keys are encrypted client-side
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/A-Shalchian/api-key-vault.git
-   cd api-key-vault
-   ```
+##  Technology Stack
 
-2. Install dependencies:
-   ```bash
-   npm install
-   # or
-   yarn install
-   ```
+### Frontend
+- **React 19** - Latest React features and performance
+- **Next.js 15** - Server-side rendering and API routes
+- **TypeScript** - Type-safe development
+- **Tailwind CSS 4** - Modern utility-first styling
+- **Lucide React** - Beautiful icon library
 
-3. Create a `.env` file in the root directory with the following environment variables:
-```
-# Supabase
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+### Backend
+- **Next.js API Routes** - Serverless backend functions
+- **Supabase** - PostgreSQL database and authentication
+- **libsodium** - Industry-standard encryption (NaCl)
+- **Row-Level Security** - Database-level access control
 
-# PostgreSQL connection for Prisma
-DATABASE_URL=postgresql://user:password@host:5432/database
+### Database
+- **PostgreSQL** (via Supabase) - Relational database
+- **RLS Policies** - Secure data isolation per user
 
-# 32-byte symmetric key (Base64).  Generate with:
-#   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
-ENCRYPTION_KEY=your_base64_key
+##  Security Features
 
-# (Optional) Development only: allow a throw-away random key if ENCRYPTION_KEY is missing.
-ALLOW_DEV_RANDOM_KEY=true
-```
+### Encryption
+- **Algorithm**: XSalsa20-Poly1305 (via libsodium)
+- **Key Size**: 256-bit encryption keys
+- **Nonce**: Random 24-byte nonce per encryption
+- **AEAD**: Authenticated encryption prevents tampering
 
-4. Set up the database schema:
-   ```bash
-   npx prisma migrate dev
-   ```
+### Database Security
+- **Row-Level Security (RLS)** - Users can only access their own data
+- **Foreign Key Constraints** - Data integrity enforced at database level
+- **Secure Authentication** - Powered by Supabase Auth with JWT tokens
 
-5. Start the development server:
-   ```bash
-   npm run dev
-   # or
-   yarn dev
-   ```
+### Best Practices
+- Encryption keys stored separately from encrypted data
+- API keys never stored in plaintext
+- Server-side token verification on all protected routes
+- HTTPS required in production
 
-6. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
-
-## Usage
-
-The application provides both a web interface and API endpoints for managing your keys:
+##  Usage
 
 ### Web Interface
 
-Navigate to the homepage to access the key management dashboard where you can:
-- Add new API keys
-- View existing keys
-- Delete or modify stored keys
+1. **Sign Up / Login** - Create an account or sign in
+2. **Store a Key** - Navigate to "Store Keys" and add your API key with a descriptive name
+3. **View Keys** - Access your stored keys from the "Vault" page
+4. **Copy Keys** - Click to reveal and copy keys when needed
+5. **Manage Profile** - View analytics and manage your account
 
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Contributing
+##  Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+##  License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+##  Acknowledgments
+
+- [Supabase](https://supabase.com/) - Backend infrastructure and authentication
+- [Next.js](https://nextjs.org/) - React framework
+- [Tailwind CSS](https://tailwindcss.com/) - Styling framework
+- [libsodium](https://libsodium.gitbook.io/) - Encryption library
+
+---
+
+<div align="center">
+  Made with ❤️ by developers, for developers
+</div>
